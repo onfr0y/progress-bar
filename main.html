@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Progress Bar</title>
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+        'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(
+        135deg,
+        rgba(2, 0, 36, 1) 0%,
+        rgba(9, 9, 121, 1) 30%,
+        rgba(7, 155, 143, 1) 60%,
+        rgba(0, 212, 255, 1) 100%
+      );
+    }
+
+    
+    .skills-container {
+      width: 90%;
+      max-width: 600px;
+      padding: 30px;
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+
+    .skill {
+      margin-bottom: 30px;
+    }
+
+    .skillname {
+      margin-bottom: 10px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #444;
+      text-transform: uppercase;
+    }
+
+
+    .skillbar {
+      width: 100%;
+      height: 25px;
+      background: #f0f0f0;
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+
+    .skill-per {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(
+        90deg,
+        rgba(131,58,180,1) 0%,
+        rgba(253,29,29,1) 50%,
+        rgba(252,176,69,1) 100%
+      );
+      border-radius: 20px;
+      position: relative;
+      transition: width 1.5s ease-in-out;
+      animation: fillbar 2.5s 1; /* from 0% to 100% of the "set" width */
+    }
+
+    /* PERCENTAGE TEXT */
+    .skill-per::after {
+      content: attr(data-value);
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    /* ANIMATION */
+    @keyframes fillbar {
+      0% {
+        width: 0%;
+      }
+      100% {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body onload="info()">
+  <div class="skills-container">
+
+    <!-- HTML Skill -->
+    <div class="skill">
+      <div class="skillname">HTML</div>
+      <div class="skillbar">
+        <div class="skill-per" id="skill_html" data-value=""></div>
+      </div>
+    </div>
+
+    <!-- CSS Skill -->
+    <div class="skill">
+      <div class="skillname">CSS</div>
+      <div class="skillbar">
+        <div class="skill-per" id="skill_css" data-value=""></div>
+      </div>
+    </div>
+
+    <!-- JavaScript Skill -->
+    <div class="skill">
+      <div class="skillname">JavaScript</div>
+      <div class="skillbar">
+        <div class="skill-per" id="skill_javascript" data-value=""></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function info() {
+      // Failure handler
+      function onFail(error) {
+        console.error("Error:", error);
+      }
+
+      function onSuccess(res) {
+     
+ 
+ 
+        const skillHtml = document.getElementById("skill_html");
+        skillHtml.setAttribute("data-value", res[0] + "%");
+        skillHtml.style.width = res[0] + "%";
+
+ 
+        const skillCss = document.getElementById("skill_css");
+        skillCss.setAttribute("data-value", res[1] + "%");
+        skillCss.style.width = res[1] + "%";
+
+    const skillJavascript = document.getElementById("skill_javascript");
+        skillJavascript.setAttribute("data-value", res[2] + "%");
+        skillJavascript.style.width = res[2] + "%";
+      }
+
+
+      google.script.run
+        .withFailureHandler(onFail)
+        .withSuccessHandler(onSuccess)
+        .get_data();
+    }
+  </script>
+</body>
+</html>
